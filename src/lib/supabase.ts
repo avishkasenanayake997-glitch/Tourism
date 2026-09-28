@@ -2,7 +2,7 @@
 // Lankora: Supabase Client Configuration
 // ==============================================================================
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage } from './storage';
 import { createClient } from '@supabase/supabase-js';
 import { Platform } from 'react-native';
 
@@ -18,11 +18,13 @@ export const isSupabaseConfigured = () => {
   );
 };
 
+const isServer = typeof window === 'undefined';
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: Platform.OS === 'web',
+    storage: safeStorage,
+    autoRefreshToken: !isServer,
+    persistSession: !isServer,
+    detectSessionInUrl: !isServer && Platform.OS === 'web',
   },
 });

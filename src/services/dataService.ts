@@ -2,7 +2,7 @@
 // Lankora: Unified Data Service (Supabase + Offline Resilience)
 // ==============================================================================
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage as AsyncStorage } from '@/lib/storage';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import {
   MOCK_DESTINATIONS,
