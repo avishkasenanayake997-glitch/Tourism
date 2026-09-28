@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useFavorites } from '@/context/FavoritesContext';
-import { TargetType } from '@/types';
+import { TargetType, Destination, Experience, Place, Restaurant, Stay } from '@/types';
 import { Typography } from '@/components/ui/Typography';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { DestinationCard } from '@/components/cards/DestinationCard';
@@ -105,19 +105,19 @@ export default function SavedScreen() {
             return (
               <View key={fav.id} style={styles.itemWrapper}>
                 {fav.target_type === 'destination' && (
-                  <DestinationCard destination={fav.item} variant="featured" />
+                  <DestinationCard destination={fav.item as Destination} variant="featured" />
                 )}
                 {fav.target_type === 'experience' && (
-                  <ExperienceCard experience={fav.item} width={Dimensions.get('window').width - 40} />
+                  <ExperienceCard experience={fav.item as Experience} width={Dimensions.get('window').width - 40} />
                 )}
                 {fav.target_type === 'place' && (
-                  <PlaceCard place={fav.item} width={Dimensions.get('window').width - 40} />
+                  <PlaceCard place={fav.item as Place} width={Dimensions.get('window').width - 40} />
                 )}
                 {fav.target_type === 'restaurant' && (
-                  <RestaurantCard restaurant={fav.item} width={Dimensions.get('window').width - 40} />
+                  <RestaurantCard restaurant={fav.item as Restaurant} width={Dimensions.get('window').width - 40} />
                 )}
                 {fav.target_type === 'stay' && (
-                  <StayCard stay={fav.item} width={Dimensions.get('window').width - 40} />
+                  <StayCard stay={fav.item as Stay} width={Dimensions.get('window').width - 40} />
                 )}
               </View>
             );

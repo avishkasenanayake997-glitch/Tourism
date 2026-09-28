@@ -99,7 +99,7 @@ export default function HomeScreen() {
         <View style={[styles.heroContainer, { paddingTop: Math.max(insets.top, 24) }]}>
           <Image
             source={{ uri: 'https://images.unsplash.com/photo-1588598198321-9735fd52455b?auto=format&fit=crop&w=1200&q=80' }}
-            style={StyleSheet.absoluteFillObject}
+            style={(StyleSheet.absoluteFill as any)}
             contentFit="cover"
             priority="high"
           />
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.surfaceElevated,
   },
   heroOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as any),
     backgroundColor: 'rgba(11, 17, 15, 0.62)',
   },
   heroTopRow: {

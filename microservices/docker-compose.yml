@@ -1,0 +1,128 @@
+version: '3.8'
+
+services:
+  # ==============================================================================
+  # API GATEWAY (Central Router)
+  # ==============================================================================
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: lankora-api-gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - AUTH_SERVICE_URL=http://auth-service:8001
+      - PLACES_SERVICE_URL=http://places-service:8002
+      - BOOKING_SERVICE_URL=http://booking-service:8003
+      - REVIEW_SERVICE_URL=http://review-service:8004
+      - ITINERARY_SERVICE_URL=http://itinerary-service:8005
+    depends_on:
+      - auth-service
+      - places-service
+      - booking-service
+      - review-service
+      - itinerary-service
+    networks:
+      - lankora-net
+    restart: unless-stopped
+
+  # ==============================================================================
+  # AUTH SERVICE (Users, Auth, Profiles)
+  # ==============================================================================
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: lankora-auth-service
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-}
+    networks:
+      - lankora-net
+    restart: unless-stopped
+
+  # ==============================================================================
+  # PLACES SERVICE (Destinations, Places, Experiences, Dining, Stays)
+  # ==============================================================================
+  places-service:
+    build:
+      context: ./places-service
+      dockerfile: Dockerfile
+    container_name: lankora-places-service
+    ports:
+      - "8002:8002"
+    environment:
+      - PORT=8002
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-}
+    networks:
+      - lankora-net
+    restart: unless-stopped
+
+  # ==============================================================================
+  # BOOKING SERVICE (Reservations, Schedules, Status)
+  # ==============================================================================
+  booking-service:
+    build:
+      context: ./booking-service
+      dockerfile: Dockerfile
+    container_name: lankora-booking-service
+    ports:
+      - "8003:8003"
+    environment:
+      - PORT=8003
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-}
+    networks:
+      - lankora-net
+    restart: unless-stopped
+
+  # ==============================================================================
+  # REVIEW SERVICE (Reviews, Ratings, Favorites)
+  # ==============================================================================
+  review-service:
+    build:
+      context: ./review-service
+      dockerfile: Dockerfile
+    container_name: lankora-review-service
+    ports:
+      - "8004:8004"
+    environment:
+      - PORT=8004
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-}
+    networks:
+      - lankora-net
+    restart: unless-stopped
+
+  # ==============================================================================
+  # ITINERARY SERVICE (Trips, Itineraries, AI Travel Generator)
+  # ==============================================================================
+  itinerary-service:
+    build:
+      context: ./itinerary-service
+      dockerfile: Dockerfile
+    container_name: lankora-itinerary-service
+    ports:
+      - "8005:8005"
+    environment:
+      - PORT=8005
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-}
+    networks:
+      - lankora-net
+    restart: unless-stopped
+
+networks:
+  lankora-net:
+    driver: bridge

@@ -1,0 +1,16 @@
+{
+  "name": "lankora-microservices",
+  "version": "1.0.0",
+  "description": "Lankora Sri Lanka Tourism Platform Microservices Architecture",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix api-gateway && npm install --prefix auth-service && npm install --prefix places-service && npm install --prefix booking-service && npm install --prefix review-service && npm install --prefix itinerary-service",
+    "dev": "npx concurrently -n \"GATEWAY,AUTH,PLACES,BOOKING,REVIEW,ITINERARY\" -c \"magenta,blue,green,yellow,cyan,red\" \"npm run dev --prefix api-gateway\" \"npm run dev --prefix auth-service\" \"npm run dev --prefix places-service\" \"npm run dev --prefix booking-service\" \"npm run dev --prefix review-service\" \"npm run dev --prefix itinerary-service\"",
+    "start": "npx concurrently -n \"GATEWAY,AUTH,PLACES,BOOKING,REVIEW,ITINERARY\" -c \"magenta,blue,green,yellow,cyan,red\" \"npm run start --prefix api-gateway\" \"npm run start --prefix auth-service\" \"npm run start --prefix places-service\" \"npm run start --prefix booking-service\" \"npm run start --prefix review-service\" \"npm run start --prefix itinerary-service\"",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

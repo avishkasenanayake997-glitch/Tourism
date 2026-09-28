@@ -32,7 +32,7 @@ export default function RootLayout() {
         <AuthProvider>
           <FavoritesProvider>
             <TripsProvider>
-              <StatusBar style="light" backgroundColor={Colors.dark.background} />
+              <StatusBar style="light" />
               <Stack
                 screenOptions={{
                   headerShown: false,

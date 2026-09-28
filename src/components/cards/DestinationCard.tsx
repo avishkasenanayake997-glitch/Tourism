@@ -53,7 +53,7 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
     >
       <Image
         source={{ uri: destination.hero_image }}
-        style={StyleSheet.absoluteFillObject}
+        style={StyleSheet.absoluteFill}
         contentFit="cover"
         transition={300}
       />
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   gradientOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as object),
     backgroundColor: 'rgba(11, 17, 15, 0.45)',
   },
   topRow: {

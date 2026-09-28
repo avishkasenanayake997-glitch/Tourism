@@ -159,7 +159,7 @@ export default function DestinationDetailScreen() {
         <View style={styles.heroBox}>
           <Image
             source={{ uri: destination.hero_image }}
-            style={StyleSheet.absoluteFillObject}
+            style={(StyleSheet.absoluteFill as any)}
             contentFit="cover"
             priority="high"
           />
@@ -604,7 +604,7 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
   },
   heroOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as any),
     backgroundColor: 'rgba(11, 17, 15, 0.45)',
   },
   floatingNav: {

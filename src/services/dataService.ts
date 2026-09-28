@@ -23,8 +23,12 @@ import {
   Trip,
   ItineraryItem,
   TargetType,
-  Favorite
+  Favorite,
+  Booking
 } from '@/types';
+import { microservicesClient } from './microservicesClient';
+
+export { microservicesClient };
 
 const FAVORITES_STORAGE_KEY = '@lankora_favorites_v1';
 const TRIPS_STORAGE_KEY = '@lankora_trips_v1';
@@ -34,6 +38,14 @@ export const dataService = {
   // DESTINATIONS
   // --------------------------------------------------------------------------
   async getDestinations(): Promise<Destination[]> {
+    // 1. Try Microservices API Gateway
+    try {
+      const msData = await microservicesClient.places.getDestinations();
+      if (msData && msData.length > 0) return msData;
+    } catch (e) {
+      // microservices gateway not reachable, fall through
+    }
+
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase
@@ -510,5 +522,45 @@ export const dataService = {
     );
 
     return { destinations, places, experiences, restaurants, stays };
+  },
+
+  // --------------------------------------------------------------------------
+  // BOOKINGS (Microservice Integration)
+  // --------------------------------------------------------------------------
+  async getBookings(userId: string): Promise<Booking[]> {
+    try {
+      const msData = await microservicesClient.bookings.getUserBookings(userId);
+      if (msData) return msData;
+    } catch {}
+
+    if (isSupabaseConfigured()) {
+      try {
+        const { data, error } = await supabase.from('bookings').select('*').eq('user_id', userId);
+        if (!error && data) return data as Booking[];
+      } catch {}
+    }
+    return [];
+  },
+
+  async createBooking(bookingData: Parameters<typeof microservicesClient.bookings.createBooking>[0]): Promise<Booking | null> {
+    try {
+      const msData = await microservicesClient.bookings.createBooking(bookingData);
+      if (msData) return msData;
+    } catch {}
+
+    if (isSupabaseConfigured()) {
+      try {
+        const { data, error } = await supabase.from('bookings').insert([bookingData]).select().single();
+        if (!error && data) return data as Booking;
+      } catch {}
+    }
+    return null;
+  },
+
+  // --------------------------------------------------------------------------
+  // AI ITINERARY GENERATOR (Microservice Integration)
+  // --------------------------------------------------------------------------
+  async generateAIItinerary(params: Parameters<typeof microservicesClient.itineraries.generateAIItinerary>[0]) {
+    return microservicesClient.itineraries.generateAIItinerary(params);
   }
 };

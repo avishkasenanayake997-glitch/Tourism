@@ -44,7 +44,7 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({
       <View style={styles.imageContainer}>
         <Image
           source={{ uri: experience.images[0] }}
-          style={StyleSheet.absoluteFillObject}
+          style={StyleSheet.absoluteFill}
           contentFit="cover"
           transition={250}
         />
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.surfaceHighlight,
   },
   imageOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as object),
     backgroundColor: 'rgba(11, 17, 15, 0.25)',
   },
   badgeWrapper: {

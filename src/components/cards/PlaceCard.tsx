@@ -39,7 +39,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, width = 200, onPres
       <View style={styles.imageBox}>
         <Image
           source={{ uri: place.images[0] }}
-          style={StyleSheet.absoluteFillObject}
+          style={StyleSheet.absoluteFill}
           contentFit="cover"
           transition={250}
         />

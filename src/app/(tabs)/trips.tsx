@@ -87,7 +87,7 @@ export default function TripsScreen() {
                 <View style={styles.coverBox}>
                   <Image
                     source={{ uri: trip.cover_image }}
-                    style={StyleSheet.absoluteFillObject}
+                    style={(StyleSheet.absoluteFill as any)}
                     contentFit="cover"
                     transition={250}
                   />
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
   },
   coverOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as any),
     backgroundColor: 'rgba(11, 17, 15, 0.45)',
   },
   coverTopRow: {

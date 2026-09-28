@@ -43,7 +43,7 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
       <View style={styles.imageBox}>
         <Image
           source={{ uri: restaurant.images[0] }}
-          style={StyleSheet.absoluteFillObject}
+          style={StyleSheet.absoluteFill}
           contentFit="cover"
           transition={250}
         />

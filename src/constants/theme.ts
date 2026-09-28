@@ -60,6 +60,8 @@ export const Colors = {
     star: '#FBBF24',
     danger: '#EF4444',
     success: '#10B981',
+    backgroundElement: '#182420',
+    backgroundSelected: '#20312B',
   },
 
   // Light Theme (Optional companion)
@@ -87,10 +89,27 @@ export const Colors = {
     star: '#F59E0B',
     danger: '#DC2626',
     success: '#059669',
+    backgroundElement: '#ECEFEA',
+    backgroundSelected: '#E0E7E3',
   }
 };
 
+export type ThemeColor = keyof typeof Colors.dark;
+
+export const Fonts = {
+  sans: 'System',
+  mono: 'Courier'
+};
+
+export const MaxContentWidth = 1200;
+
 export const Spacing = {
+  half: 2,
+  one: 4,
+  two: 8,
+  three: 12,
+  four: 16,
+  five: 20,
   xs: 4,
   sm: 8,
   md: 12,

@@ -39,7 +39,7 @@ export const StayCard: React.FC<StayCardProps> = ({ stay, width = 250, onPress }
       <View style={styles.imageBox}>
         <Image
           source={{ uri: stay.images[0] }}
-          style={StyleSheet.absoluteFillObject}
+          style={StyleSheet.absoluteFill}
           contentFit="cover"
           transition={250}
         />

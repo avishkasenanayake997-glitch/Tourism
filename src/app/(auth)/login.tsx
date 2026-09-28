@@ -61,7 +61,7 @@ export default function LoginScreen() {
     <View style={styles.screen}>
       <Image
         source={{ uri: 'https://images.unsplash.com/photo-1546708973-b339540b5162?auto=format&fit=crop&w=1200&q=80' }}
-        style={StyleSheet.absoluteFillObject}
+        style={(StyleSheet.absoluteFill as any)}
         contentFit="cover"
       />
       <View style={styles.overlay} />
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.background,
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as any),
     backgroundColor: 'rgba(11, 17, 15, 0.72)',
   },
   content: {

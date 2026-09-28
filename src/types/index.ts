@@ -157,3 +157,24 @@ export interface Trip {
   created_at: string;
   updated_at?: string;
 }
+
+export interface Booking {
+  id: string;
+  user_id: string;
+  target_type: 'stay' | 'experience' | 'restaurant' | 'tour';
+  target_id: string;
+  title: string;
+  booking_date: string;
+  end_date?: string;
+  time_slot?: string;
+  guests: number;
+  total_price: number;
+  currency: string;
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  payment_status: 'pending' | 'paid' | 'refunded' | 'failed';
+  special_requests?: string;
+  contact_phone?: string;
+  contact_email?: string;
+  created_at: string;
+  updated_at?: string;
+}

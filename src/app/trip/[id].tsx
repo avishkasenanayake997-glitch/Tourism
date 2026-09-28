@@ -88,7 +88,7 @@ export default function TripDetailScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         {/* Cover Header */}
         <View style={styles.coverBox}>
-          <Image source={{ uri: trip.cover_image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+          <Image source={{ uri: trip.cover_image }} style={(StyleSheet.absoluteFill as any)} contentFit="cover" />
           <View style={styles.coverOverlay} />
 
           <View style={[styles.floatingNav, { top: Math.max(insets.top, 16) }]}>
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
   },
   coverOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as any),
     backgroundColor: 'rgba(11, 17, 15, 0.52)',
   },
   floatingNav: {

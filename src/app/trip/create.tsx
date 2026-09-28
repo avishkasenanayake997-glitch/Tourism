@@ -111,7 +111,7 @@ export default function CreateTripScreen() {
           JOURNEY COVER
         </Typography>
         <View style={styles.coverPreview}>
-          <Image source={{ uri: selectedCover }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+          <Image source={{ uri: selectedCover }} style={(StyleSheet.absoluteFill as any)} contentFit="cover" />
           <View style={styles.coverOverlay} />
           <Typography variant="h2" color="#FFFFFF" weight="700">
             {title || 'Sri Lankan Escape'}
@@ -125,7 +125,7 @@ export default function CreateTripScreen() {
               onPress={() => setSelectedCover(url)}
               style={[styles.presetThumb, selectedCover === url && styles.presetThumbActive]}
             >
-              <Image source={{ uri: url }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+              <Image source={{ uri: url }} style={(StyleSheet.absoluteFill as any)} contentFit="cover" />
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.dark.border,
   },
   coverOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as any),
     backgroundColor: 'rgba(11, 17, 15, 0.45)',
   },
   presetRow: {

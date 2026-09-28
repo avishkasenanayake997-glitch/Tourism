@@ -86,7 +86,7 @@ export default function ExperienceDetailScreen() {
         <View style={styles.heroBox}>
           <Image
             source={{ uri: experience.images[0] }}
-            style={StyleSheet.absoluteFillObject}
+            style={(StyleSheet.absoluteFill as any)}
             contentFit="cover"
           />
           <View style={styles.heroOverlay} />
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
   },
   heroOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet.absoluteFill as any),
     backgroundColor: 'rgba(11, 17, 15, 0.45)',
   },
   floatingNav: {
