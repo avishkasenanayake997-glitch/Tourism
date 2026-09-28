@@ -1,17 +1,17 @@
 // ==============================================================================
-// Lankora: Restaurant & Food Card
+// Lankora: Luxury Authentic Dining Card
 // ==============================================================================
 
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Restaurant } from '@/types';
 import { Typography } from '../ui/Typography';
-import { Badge } from '../ui/Badge';
-import { RatingStars } from '../ui/RatingStars';
 import { FavoriteButton } from '../ui/FavoriteButton';
-import { Colors, BorderRadius, Spacing } from '@/constants/theme';
+import { Colors, BorderRadius, Spacing, Shadows } from '@/constants/theme';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -38,7 +38,7 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={handlePress}
-      style={[styles.container, { width }]}
+      style={[styles.container, { width }, Shadows.md]}
     >
       <View style={styles.imageBox}>
         <Image
@@ -47,6 +47,11 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
           contentFit="cover"
           transition={250}
         />
+        <LinearGradient
+          colors={['transparent', 'rgba(7, 10, 9, 0.8)']}
+          style={StyleSheet.absoluteFill}
+        />
+
         <FavoriteButton
           targetType="restaurant"
           targetId={restaurant.id}
@@ -55,8 +60,9 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
           iconSize={16}
           style={styles.fav}
         />
+
         <View style={styles.pricePill}>
-          <Typography variant="caption" weight="700" color="#FFFFFF">
+          <Typography variant="caption" weight="800" color={Colors.gold.primary}>
             {restaurant.price_range}
           </Typography>
         </View>
@@ -64,20 +70,29 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
 
       <View style={styles.content}>
         <View style={styles.metaRow}>
-          <Typography variant="caption" color={Colors.terracotta.light} weight="600">
+          <Typography variant="caption" color={Colors.terracotta.primary} weight="700" style={{ letterSpacing: 0.5 }}>
             {restaurant.cuisine.toUpperCase()}
           </Typography>
-          <RatingStars rating={restaurant.rating} reviewCount={restaurant.review_count} size={11} />
+
+          <View style={styles.ratingRow}>
+            <Ionicons name="star" size={11} color={Colors.gold.primary} />
+            <Typography variant="caption" color="#FFFFFF" weight="700">
+              {restaurant.rating.toFixed(1)}
+            </Typography>
+          </View>
         </View>
 
-        <Typography variant="h4" weight="600" numberOfLines={1} style={styles.title}>
+        <Typography variant="h4" weight="700" numberOfLines={1} style={styles.title}>
           {restaurant.name}
         </Typography>
 
         {restaurant.must_try && restaurant.must_try.length > 0 && (
-          <Typography variant="caption" color={Colors.dark.textMuted} numberOfLines={1}>
-            Must Try: {restaurant.must_try[0]}
-          </Typography>
+          <View style={styles.mustTryRow}>
+            <Ionicons name="restaurant-outline" size={11} color={Colors.gold.light} />
+            <Typography variant="caption" color="rgba(255, 255, 255, 0.65)" numberOfLines={1} style={{ flex: 1 }}>
+              {restaurant.must_try[0]}
+            </Typography>
+          </View>
         )}
       </View>
     </TouchableOpacity>
@@ -86,34 +101,37 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: BorderRadius.lg,
+    borderRadius: BorderRadius.xl,
     overflow: 'hidden',
-    backgroundColor: Colors.dark.surfaceElevated,
+    backgroundColor: '#0E1512',
     borderWidth: 1,
-    borderColor: Colors.dark.border,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   imageBox: {
-    height: 130,
+    height: 135,
     width: '100%',
     position: 'relative',
-    backgroundColor: Colors.dark.surfaceHighlight,
+    backgroundColor: '#15201C',
   },
   fav: {
     position: 'absolute',
-    top: Spacing.xs,
-    right: Spacing.xs,
+    top: Spacing.sm,
+    right: Spacing.sm,
   },
   pricePill: {
     position: 'absolute',
-    bottom: Spacing.xs,
-    left: Spacing.xs,
-    backgroundColor: 'rgba(11, 17, 15, 0.75)',
+    bottom: Spacing.sm,
+    left: Spacing.sm,
+    backgroundColor: 'rgba(12, 18, 15, 0.85)',
     paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: BorderRadius.xs,
+    paddingVertical: 3,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(245, 176, 65, 0.3)',
   },
   content: {
     padding: Spacing.md,
+    backgroundColor: '#0E1512',
   },
   metaRow: {
     flexDirection: 'row',
@@ -121,8 +139,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
   },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+  },
   title: {
-    color: Colors.dark.text,
+    color: '#FFFFFF',
     marginBottom: 4,
+    letterSpacing: -0.2,
+  },
+  mustTryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 2,
   },
 });

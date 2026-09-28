@@ -1,5 +1,5 @@
 // ==============================================================================
-// Lankora: Editorial Destination Card
+// Lankora: Luxury Editorial Destination Card
 // ==============================================================================
 
 import React from 'react';
@@ -7,10 +7,10 @@ import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { Destination } from '@/types';
 import { Typography } from '../ui/Typography';
 import { Badge } from '../ui/Badge';
-import { RatingStars } from '../ui/RatingStars';
 import { FavoriteButton } from '../ui/FavoriteButton';
 import { Colors, BorderRadius, Spacing, Shadows } from '@/constants/theme';
 
@@ -38,8 +38,8 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
   };
 
   const isFeatured = variant === 'featured';
-  const cardWidth = isFeatured ? SCREEN_WIDTH - 40 : 260;
-  const cardHeight = isFeatured ? 360 : 310;
+  const cardWidth = isFeatured ? SCREEN_WIDTH - 36 : 270;
+  const cardHeight = isFeatured ? 380 : 330;
 
   return (
     <TouchableOpacity
@@ -58,16 +58,36 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
         transition={300}
       />
 
-      {/* Dark gradient overlay for editorial readability */}
-      <View style={styles.gradientOverlay} />
+      {/* Smooth Editorial Linear Vignette */}
+      <LinearGradient
+        colors={[
+          'rgba(7, 10, 9, 0.2)',
+          'rgba(7, 10, 9, 0.45)',
+          'rgba(7, 10, 9, 0.82)',
+          '#070A09'
+        ]}
+        locations={[0, 0.45, 0.75, 1]}
+        style={StyleSheet.absoluteFill}
+      />
 
-      {/* Top Bar: Badge & Bookmark */}
+      {/* Top Floating Bar: Badges & Favorite Button */}
       <View style={styles.topRow}>
-        <Badge
-          label={destination.category}
-          variant={destination.is_hidden_gem ? 'terracotta' : 'emerald'}
-          size="sm"
-        />
+        <View style={styles.badgeGroup}>
+          <Badge
+            label={destination.category}
+            variant={destination.is_hidden_gem ? 'gold' : 'emerald'}
+            size="sm"
+          />
+          {destination.is_featured && (
+            <View style={styles.curatedPill}>
+              <Ionicons name="sparkles" size={10} color={Colors.gold.primary} />
+              <Typography variant="badge" color={Colors.gold.primary} style={styles.curatedText}>
+                Curated
+              </Typography>
+            </View>
+          )}
+        </View>
+
         <FavoriteButton
           targetType="destination"
           targetId={destination.id}
@@ -77,22 +97,34 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
         />
       </View>
 
-      {/* Bottom Content */}
+      {/* Bottom Content Container */}
       <View style={styles.bottomContent}>
         <View style={styles.metaRow}>
-          <Typography variant="caption" color={Colors.emerald.accent} weight="600">
-            {destination.province.toUpperCase()}
-          </Typography>
-          <RatingStars rating={destination.rating} reviewCount={destination.review_count} />
+          <View style={styles.locationPill}>
+            <Ionicons name="location-sharp" size={12} color={Colors.emerald.vibrant} />
+            <Typography variant="caption" color={Colors.emerald.accent} weight="700">
+              {destination.province.toUpperCase()}
+            </Typography>
+          </View>
+
+          <View style={styles.ratingPill}>
+            <Ionicons name="star" size={11} color={Colors.gold.primary} />
+            <Typography variant="caption" color="#FFFFFF" weight="700" style={styles.ratingNumber}>
+              {destination.rating.toFixed(1)}
+            </Typography>
+            <Typography variant="caption" color="rgba(255, 255, 255, 0.5)">
+              ({destination.review_count})
+            </Typography>
+          </View>
         </View>
 
-        <Typography variant={isFeatured ? 'h1' : 'h2'} weight="700" style={styles.title}>
+        <Typography variant={isFeatured ? 'h1' : 'h2'} weight="800" numberOfLines={1} style={styles.title}>
           {destination.name}
         </Typography>
 
         <Typography
           variant="bodySmall"
-          color={Colors.dark.textSecondary}
+          color="rgba(255, 255, 255, 0.78)"
           numberOfLines={2}
           style={styles.description}
         >
@@ -101,14 +133,17 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
 
         <View style={styles.footerRow}>
           <View style={styles.budgetPill}>
-            <Typography variant="caption" color={Colors.dark.textMuted}>
-              Est. {destination.estimated_budget}
+            <Ionicons name="wallet-outline" size={12} color={Colors.gold.light} />
+            <Typography variant="caption" color="#FCD34D" weight="600">
+              {destination.estimated_budget}
             </Typography>
           </View>
-          <View style={styles.explorePill}>
-            <Typography variant="caption" color={Colors.sand.warm} weight="600">
-              Discover →
+
+          <View style={styles.exploreButton}>
+            <Typography variant="caption" color="#FFFFFF" weight="700">
+              Explore
             </Typography>
+            <Ionicons name="arrow-forward" size={12} color="#FFFFFF" style={{ marginLeft: 3 }} />
           </View>
         </View>
       </View>
@@ -118,17 +153,13 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: BorderRadius.xl,
+    borderRadius: BorderRadius.xxl,
     overflow: 'hidden',
-    backgroundColor: Colors.dark.surfaceElevated,
+    backgroundColor: '#0E1512',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: 'rgba(255, 255, 255, 0.12)',
     position: 'relative',
-  },
-  gradientOverlay: {
-    ...(StyleSheet.absoluteFill as object),
-    backgroundColor: 'rgba(11, 17, 15, 0.45)',
   },
   topRow: {
     flexDirection: 'row',
@@ -137,22 +168,59 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
     zIndex: 2,
   },
+  badgeGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  curatedPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: 'rgba(12, 18, 15, 0.75)',
+    paddingHorizontal: 7,
+    paddingVertical: 3.5,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(245, 176, 65, 0.3)',
+  },
+  curatedText: {
+    fontSize: 9,
+    letterSpacing: 0.6,
+  },
   bottomContent: {
-    padding: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: Spacing.lg,
+    paddingTop: Spacing.xs,
     zIndex: 2,
-    backgroundColor: 'rgba(11, 17, 15, 0.72)',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.06)',
   },
   metaRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.xs,
+    marginBottom: 6,
+  },
+  locationPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  ratingPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    paddingHorizontal: 7,
+    paddingVertical: 2.5,
+    borderRadius: BorderRadius.full,
+  },
+  ratingNumber: {
+    fontSize: 11,
   },
   title: {
     color: '#FFFFFF',
     marginBottom: 4,
+    letterSpacing: -0.4,
   },
   description: {
     lineHeight: 18,
@@ -162,16 +230,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: Spacing.xs,
+    paddingTop: 4,
   },
   budgetPill: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: BorderRadius.xs,
-  },
-  explorePill: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 5,
+    backgroundColor: 'rgba(245, 176, 65, 0.12)',
+    paddingHorizontal: 9,
+    paddingVertical: 4,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(245, 176, 65, 0.25)',
+  },
+  exploreButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    paddingHorizontal: 11,
+    paddingVertical: 5,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
   },
 });

@@ -1,96 +1,109 @@
 // ==============================================================================
-// Lankora: Design System Tokens & Theme
-// Inspired by Sri Lanka's emerald tea hills, Indian ocean horizons, and ancient rock citadels
+// Lankora: Luxury Design System & Aesthetic Tokens
+// Inspired by Sri Lanka's emerald tea hills, Indian ocean horizons, and ancient citadels
 // ==============================================================================
 
 export const Colors = {
-  // Brand Palettes
-  ocean: {
-    darkest: '#061C22',
-    deep: '#0A2E36',
-    primary: '#0F4C5C',
-    medium: '#1B6B7F',
-    light: '#328FA6',
-    soft: '#E6F3F7',
+  // Brand Heritage Palettes
+  gold: {
+    primary: '#F5B041',
+    light: '#FCD34D',
+    deep: '#D97706',
+    glow: 'rgba(245, 176, 65, 0.25)',
   },
   emerald: {
-    deepest: '#091A14',
-    dark: '#112C22',
-    primary: '#1D4A3A',
-    vibrant: '#2A6F57',
-    mint: '#4EAB8B',
-    accent: '#72D7B2',
+    deepest: '#050D0A',
+    dark: '#0A1A14',
+    primary: '#059669',
+    vibrant: '#10B981',
+    mint: '#34D399',
+    accent: '#6EE7B7',
+    glow: 'rgba(52, 211, 153, 0.22)',
   },
-  sand: {
-    lightest: '#FAF7F2',
-    soft: '#F3ECE1',
-    warm: '#E6DAC7',
-    muted: '#C9B69B',
-    deep: '#8C7758',
+  ocean: {
+    darkest: '#030E14',
+    deep: '#072430',
+    primary: '#0284C7',
+    cyan: '#38BDF8',
+    glow: 'rgba(56, 189, 248, 0.2)',
   },
   terracotta: {
-    primary: '#E76F51',
-    light: '#F4A261',
+    primary: '#FF6B4A',
+    light: '#FB923C',
     deep: '#C85235',
-    subtle: '#38221D',
+    subtle: 'rgba(255, 107, 74, 0.15)',
+  },
+  sand: {
+    lightest: '#FAF8F5',
+    soft: '#F4ECE1',
+    warm: '#E2D5C3',
+    muted: '#B8A58D',
   },
 
-  // Dark Luxury Theme (Primary visual mode)
+  // Dark Luxury Palette (Primary Visual Identity)
   dark: {
-    background: '#0B110F',
-    surface: '#121A17',
-    surfaceElevated: '#182420',
-    surfaceHighlight: '#20312B',
-    border: '#22332D',
-    borderLight: '#2C423A',
-    
-    text: '#F5F8F6',
-    textSecondary: '#D1DDD8',
-    textMuted: '#899E97',
-    textSubtle: '#596F68',
+    background: '#070A09',
+    surface: '#0E1512',
+    surfaceElevated: '#15201C',
+    surfaceHighlight: '#1E2C26',
+    surfacePill: 'rgba(255, 255, 255, 0.06)',
+    border: 'rgba(255, 255, 255, 0.08)',
+    borderLight: 'rgba(255, 255, 255, 0.14)',
+    borderGlow: 'rgba(52, 211, 153, 0.3)',
 
-    accent: '#E76F51', // Terracotta warm sunset
-    accentGreen: '#4EAB8B', // Forest emerald
-    accentOcean: '#269AB2', // Deep coastal cyan
+    text: '#FFFFFF',
+    textSecondary: '#E2E8E5',
+    textMuted: '#94A39D',
+    textSubtle: '#64746E',
 
-    overlay: 'rgba(11, 17, 15, 0.72)',
-    overlayHeavy: 'rgba(11, 17, 15, 0.92)',
-    glass: 'rgba(24, 36, 32, 0.75)',
+    accent: '#F5B041', // Royal Ceylon Gold
+    accentGreen: '#34D399', // Brilliant Emerald
+    accentOcean: '#38BDF8', // Cyan Shoreline
+    accentCoral: '#FF6B4A', // Mirissa Sunset
 
-    star: '#FBBF24',
+    overlay: 'rgba(7, 10, 9, 0.65)',
+    overlayHeavy: 'rgba(7, 10, 9, 0.92)',
+    glass: 'rgba(14, 21, 18, 0.78)',
+    glassBorder: 'rgba(255, 255, 255, 0.1)',
+
+    star: '#F5B041',
     danger: '#EF4444',
     success: '#10B981',
-    backgroundElement: '#182420',
-    backgroundSelected: '#20312B',
+    backgroundElement: '#15201C',
+    backgroundSelected: '#1E2C26',
   },
 
-  // Light Theme (Optional companion)
+  // Light Theme (Editorial High-Key)
   light: {
-    background: '#F9FBF9',
+    background: '#F8FAF9',
     surface: '#FFFFFF',
-    surfaceElevated: '#F3F6F4',
-    surfaceHighlight: '#E8EFEA',
-    border: '#E0E7E3',
-    borderLight: '#ECEFEA',
+    surfaceElevated: '#F0F4F2',
+    surfaceHighlight: '#E4ECE8',
+    surfacePill: 'rgba(0, 0, 0, 0.04)',
+    border: '#E2E8E4',
+    borderLight: '#EDF2EE',
+    borderGlow: 'rgba(5, 150, 105, 0.3)',
 
-    text: '#111A17',
-    textSecondary: '#33443E',
-    textMuted: '#687B74',
-    textSubtle: '#96A8A1',
+    text: '#0C1411',
+    textSecondary: '#24332D',
+    textMuted: '#64756E',
+    textSubtle: '#8E9E98',
 
-    accent: '#E76F51',
-    accentGreen: '#1D4A3A',
-    accentOcean: '#0F4C5C',
+    accent: '#D97706',
+    accentGreen: '#059669',
+    accentOcean: '#0284C7',
+    accentCoral: '#EA580C',
 
     overlay: 'rgba(255, 255, 255, 0.8)',
     overlayHeavy: 'rgba(255, 255, 255, 0.95)',
     glass: 'rgba(255, 255, 255, 0.85)',
+    glassBorder: 'rgba(0, 0, 0, 0.06)',
 
-    star: '#F59E0B',
+    star: '#D97706',
     danger: '#DC2626',
     success: '#059669',
-    backgroundElement: '#ECEFEA',
-    backgroundSelected: '#E0E7E3',
+    backgroundElement: '#F0F4F2',
+    backgroundSelected: '#E4ECE8',
   }
 };
 
@@ -127,43 +140,44 @@ export const BorderRadius = {
   sm: 10,
   md: 14,
   lg: 18,
-  xl: 24,
-  xxl: 32,
+  xl: 22,
+  xxl: 28,
   full: 9999,
 };
 
 export const Typography = {
   display: {
     fontSize: 34,
-    lineHeight: 42,
-    fontWeight: '700' as const,
-    letterSpacing: -0.6,
+    lineHeight: 40,
+    fontWeight: '800' as const,
+    letterSpacing: -0.8,
   },
   h1: {
-    fontSize: 28,
-    lineHeight: 34,
+    fontSize: 26,
+    lineHeight: 32,
     fontWeight: '700' as const,
-    letterSpacing: -0.4,
+    letterSpacing: -0.5,
   },
   h2: {
-    fontSize: 22,
-    lineHeight: 28,
-    fontWeight: '600' as const,
-    letterSpacing: -0.2,
+    fontSize: 21,
+    lineHeight: 27,
+    fontWeight: '700' as const,
+    letterSpacing: -0.3,
   },
   h3: {
     fontSize: 18,
     lineHeight: 24,
     fontWeight: '600' as const,
+    letterSpacing: -0.2,
   },
   h4: {
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: 15,
+    lineHeight: 20,
     fontWeight: '600' as const,
   },
   bodyLarge: {
     fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 23,
     fontWeight: '400' as const,
   },
   body: {
@@ -172,56 +186,56 @@ export const Typography = {
     fontWeight: '400' as const,
   },
   bodySmall: {
-    fontSize: 12,
-    lineHeight: 17,
+    fontSize: 13,
+    lineHeight: 18,
     fontWeight: '400' as const,
   },
   caption: {
-    fontSize: 11,
-    lineHeight: 15,
+    fontSize: 12,
+    lineHeight: 16,
     fontWeight: '500' as const,
-    letterSpacing: 0.2,
+    letterSpacing: 0.1,
   },
   badge: {
-    fontSize: 11,
-    lineHeight: 14,
-    fontWeight: '600' as const,
-    letterSpacing: 0.4,
+    fontSize: 10,
+    lineHeight: 13,
+    fontWeight: '700' as const,
+    letterSpacing: 0.8,
     textTransform: 'uppercase' as const,
-  }
+  },
 };
 
 export const Shadows = {
   sm: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.18,
-    shadowRadius: 4,
+    shadowOpacity: 0.35,
+    shadowRadius: 5,
     elevation: 2,
   },
   md: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.45,
+    shadowRadius: 14,
+    elevation: 5,
   },
   lg: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.35,
-    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.55,
+    shadowRadius: 24,
     elevation: 8,
   },
-  glowGreen: {
-    shadowColor: '#4EAB8B',
+  emeraldGlow: {
+    shadowColor: '#34D399',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 12,
-    elevation: 5,
+    elevation: 6,
   },
-  glowTerracotta: {
-    shadowColor: '#E76F51',
+  goldGlow: {
+    shadowColor: '#F5B041',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 12,

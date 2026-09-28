@@ -1,5 +1,5 @@
 // ==============================================================================
-// Lankora: Explore & Multi-Filter Discovery Screen
+// Lankora: Explore & Multi-Filter Discovery Screen (Luxury Travel Directory)
 // ==============================================================================
 
 import React, { useEffect, useState, useMemo } from 'react';
@@ -8,7 +8,6 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
   Dimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -26,19 +25,19 @@ import { RestaurantCard } from '@/components/cards/RestaurantCard';
 import { StayCard } from '@/components/cards/StayCard';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/SkeletonLoader';
-import { Colors, Spacing, BorderRadius } from '@/constants/theme';
+import { Colors, Spacing, BorderRadius, Shadows } from '@/constants/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 type FilterType = 'all' | 'destinations' | 'experiences' | 'places' | 'food' | 'stays';
 
-const TABS: { id: FilterType; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'destinations', label: 'Destinations' },
-  { id: 'experiences', label: 'Experiences' },
-  { id: 'places', label: 'Places' },
-  { id: 'food', label: 'Food & Cafes' },
-  { id: 'stays', label: 'Stays' },
+const TABS: { id: FilterType; label: string; icon: string }[] = [
+  { id: 'all', label: 'All', icon: 'sparkles' },
+  { id: 'destinations', label: 'Destinations', icon: 'compass' },
+  { id: 'experiences', label: 'Experiences', icon: 'trail-sign' },
+  { id: 'places', label: 'Sights', icon: 'business' },
+  { id: 'food', label: 'Dining', icon: 'restaurant' },
+  { id: 'stays', label: 'Retreats', icon: 'bed' },
 ];
 
 const PROVINCES = [
@@ -91,7 +90,6 @@ export default function ExploreScreen() {
     }
   };
 
-  // Filtered by province and search
   const filteredDestinations = useMemo(() => {
     return destinations.filter((item) => {
       const matchProv =
@@ -158,18 +156,25 @@ export default function ExploreScreen() {
     setSearchQuery('');
   };
 
+  const cardWidth = SCREEN_WIDTH - 32;
+
   return (
     <View style={[styles.screen, { paddingTop: Math.max(insets.top, 16) }]}>
       {/* Search Header */}
       <View style={styles.headerArea}>
-        <Typography variant="h2" weight="700" style={styles.screenTitle}>
-          Explore Sri Lanka
-        </Typography>
+        <View style={styles.titleRow}>
+          <Typography variant="badge" color={Colors.gold.primary} weight="800">
+            ISLAND DIRECTORY
+          </Typography>
+          <Typography variant="display" color="#FFFFFF" weight="800" style={styles.screenTitle}>
+            Explore Ceylon
+          </Typography>
+        </View>
 
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Filter by name, district, or style..."
+          placeholder="Search by name, province, or vibe..."
         />
       </View>
 
@@ -184,10 +189,16 @@ export default function ExploreScreen() {
                 onPress={() => setActiveTab(tab.id)}
                 style={[styles.tabButton, active && styles.tabButtonActive]}
               >
+                <Ionicons
+                  name={tab.icon as any}
+                  size={13}
+                  color={active ? '#000000' : Colors.gold.primary}
+                />
                 <Typography
                   variant="caption"
-                  weight={active ? '700' : '500'}
-                  color={active ? '#FFFFFF' : Colors.dark.textSecondary}
+                  weight={active ? '800' : '600'}
+                  color={active ? '#000000' : 'rgba(255, 255, 255, 0.8)'}
+                  style={{ marginLeft: 4 }}
                 >
                   {tab.label}
                 </Typography>
@@ -210,7 +221,7 @@ export default function ExploreScreen() {
               >
                 <Typography
                   variant="caption"
-                  color={active ? Colors.emerald.accent : Colors.dark.textMuted}
+                  color={active ? Colors.emerald.accent : 'rgba(255, 255, 255, 0.6)'}
                   weight={active ? '700' : '500'}
                 >
                   {prov}
@@ -223,13 +234,13 @@ export default function ExploreScreen() {
 
       {/* Result Count Status */}
       <View style={styles.resultsBar}>
-        <Typography variant="caption" color={Colors.dark.textMuted}>
-          Showing {totalResults} curated discovery results
+        <Typography variant="caption" color="rgba(255, 255, 255, 0.5)">
+          Showing <Typography variant="caption" color="#FFFFFF" weight="700">{totalResults}</Typography> curated places
         </Typography>
         {(searchQuery || selectedProvince !== 'All Provinces' || activeTab !== 'all') && (
           <TouchableOpacity onPress={resetFilters}>
-            <Typography variant="caption" color={Colors.terracotta.light} weight="600">
-              Reset Filters
+            <Typography variant="caption" color={Colors.gold.primary} weight="700">
+              Clear Filters
             </Typography>
           </TouchableOpacity>
         )}
@@ -238,88 +249,61 @@ export default function ExploreScreen() {
       {/* Main Content Area */}
       {loading ? (
         <View style={styles.loadingContainer}>
-          <Skeleton height={220} borderRadius={BorderRadius.lg} style={{ marginBottom: Spacing.md }} />
-          <Skeleton height={220} borderRadius={BorderRadius.lg} />
+          <Skeleton height={280} borderRadius={BorderRadius.xxl} style={{ marginBottom: Spacing.md }} />
+          <Skeleton height={280} borderRadius={BorderRadius.xxl} />
         </View>
       ) : totalResults === 0 ? (
         <EmptyState
           icon="search-outline"
           title="No Match Found"
-          description="We couldn’t find matching locations or activities. Try another search keyword or clear filters."
+          description="We couldn't find matching gems. Try another keyword or clear your filters."
           actionTitle="Reset Filters"
           onAction={resetFilters}
         />
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollList}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[styles.scrollList, { paddingBottom: 110 }]}
+        >
           {/* Destinations */}
-          {(activeTab === 'all' || activeTab === 'destinations') && filteredDestinations.length > 0 && (
-            <View style={styles.groupSection}>
-              <Typography variant="h3" weight="700" style={styles.groupTitle}>
-                Destinations ({filteredDestinations.length})
-              </Typography>
-              <View style={styles.cardStack}>
-                {filteredDestinations.map((dest) => (
-                  <DestinationCard key={dest.id} destination={dest} variant="featured" />
-                ))}
+          {(activeTab === 'all' || activeTab === 'destinations') &&
+            filteredDestinations.map((dest) => (
+              <View key={`dest-${dest.id}`} style={styles.cardContainer}>
+                <DestinationCard destination={dest} variant="featured" />
               </View>
-            </View>
-          )}
+            ))}
 
           {/* Experiences */}
-          {(activeTab === 'all' || activeTab === 'experiences') && filteredExperiences.length > 0 && (
-            <View style={styles.groupSection}>
-              <Typography variant="h3" weight="700" style={styles.groupTitle}>
-                Island Experiences ({filteredExperiences.length})
-              </Typography>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardGrid}>
-                {filteredExperiences.map((exp) => (
-                  <ExperienceCard key={exp.id} experience={exp} width={260} />
-                ))}
-              </ScrollView>
-            </View>
-          )}
-
-          {/* Places */}
-          {(activeTab === 'all' || activeTab === 'places') && filteredPlaces.length > 0 && (
-            <View style={styles.groupSection}>
-              <Typography variant="h3" weight="700" style={styles.groupTitle}>
-                Heritage & Sights ({filteredPlaces.length})
-              </Typography>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardGrid}>
-                {filteredPlaces.map((plc) => (
-                  <PlaceCard key={plc.id} place={plc} width={220} />
-                ))}
-              </ScrollView>
-            </View>
-          )}
-
-          {/* Restaurants */}
-          {(activeTab === 'all' || activeTab === 'food') && filteredRestaurants.length > 0 && (
-            <View style={styles.groupSection}>
-              <Typography variant="h3" weight="700" style={styles.groupTitle}>
-                Authentic Ceylon Flavors ({filteredRestaurants.length})
-              </Typography>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardGrid}>
-                {filteredRestaurants.map((rst) => (
-                  <RestaurantCard key={rst.id} restaurant={rst} width={260} />
-                ))}
-              </ScrollView>
-            </View>
-          )}
+          {(activeTab === 'all' || activeTab === 'experiences') &&
+            filteredExperiences.map((exp) => (
+              <View key={`exp-${exp.id}`} style={styles.cardContainer}>
+                <ExperienceCard experience={exp} width={cardWidth} />
+              </View>
+            ))}
 
           {/* Stays */}
-          {(activeTab === 'all' || activeTab === 'stays') && filteredStays.length > 0 && (
-            <View style={styles.groupSection}>
-              <Typography variant="h3" weight="700" style={styles.groupTitle}>
-                Villas & Eco-Lodges ({filteredStays.length})
-              </Typography>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardGrid}>
-                {filteredStays.map((sty) => (
-                  <StayCard key={sty.id} stay={sty} width={270} />
-                ))}
-              </ScrollView>
-            </View>
-          )}
+          {(activeTab === 'all' || activeTab === 'stays') &&
+            filteredStays.map((stay) => (
+              <View key={`stay-${stay.id}`} style={styles.cardContainer}>
+                <StayCard stay={stay} width={cardWidth} />
+              </View>
+            ))}
+
+          {/* Food */}
+          {(activeTab === 'all' || activeTab === 'food') &&
+            filteredRestaurants.map((rest) => (
+              <View key={`rest-${rest.id}`} style={styles.cardContainer}>
+                <RestaurantCard restaurant={rest} width={cardWidth} />
+              </View>
+            ))}
+
+          {/* Places */}
+          {(activeTab === 'all' || activeTab === 'places') &&
+            filteredPlaces.map((place) => (
+              <View key={`place-${place.id}`} style={styles.cardContainer}>
+                <PlaceCard place={place} width={cardWidth} />
+              </View>
+            ))}
         </ScrollView>
       )}
     </View>
@@ -329,78 +313,75 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.dark.background,
+    backgroundColor: '#070A09',
   },
   headerArea: {
     paddingHorizontal: Spacing.lg,
-    paddingBottom: Spacing.sm,
+    marginBottom: Spacing.sm,
+  },
+  titleRow: {
+    marginBottom: Spacing.sm,
   },
   screenTitle: {
-    marginBottom: Spacing.sm,
+    letterSpacing: -0.6,
+    marginTop: 2,
   },
   tabsWrapper: {
     marginTop: Spacing.xs,
-    paddingBottom: Spacing.xs,
+    marginBottom: Spacing.sm,
   },
   tabsRow: {
     paddingHorizontal: Spacing.lg,
-    gap: Spacing.xs,
+    gap: 8,
   },
   tabButton: {
-    paddingHorizontal: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0F1714',
+    paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: BorderRadius.full,
-    backgroundColor: Colors.dark.surfaceElevated,
     borderWidth: 1,
-    borderColor: Colors.dark.border,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   tabButtonActive: {
-    backgroundColor: Colors.emerald.vibrant,
-    borderColor: Colors.emerald.mint,
+    backgroundColor: Colors.gold.primary,
+    borderColor: Colors.gold.primary,
   },
   provinceWrapper: {
-    paddingVertical: Spacing.xs,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.dark.border,
+    marginBottom: Spacing.sm,
   },
   provinceRow: {
     paddingHorizontal: Spacing.lg,
-    gap: Spacing.xs,
+    gap: 6,
   },
   provChip: {
     paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: BorderRadius.xs,
+    paddingVertical: 5,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.06)',
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
   },
   provChipActive: {
-    backgroundColor: 'rgba(78, 171, 139, 0.15)',
+    borderColor: Colors.emerald.accent,
+    backgroundColor: 'rgba(52, 211, 153, 0.12)',
   },
   resultsBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.sm,
+    marginBottom: Spacing.md,
   },
   loadingContainer: {
     padding: Spacing.lg,
   },
   scrollList: {
-    paddingBottom: 60,
-  },
-  groupSection: {
-    marginTop: Spacing.lg,
-  },
-  groupTitle: {
     paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.sm,
+    gap: 16,
   },
-  cardStack: {
-    paddingHorizontal: Spacing.lg,
-    gap: Spacing.md,
-  },
-  cardGrid: {
-    paddingHorizontal: Spacing.lg,
-    gap: Spacing.md,
+  cardContainer: {
+    width: '100%',
   },
 });

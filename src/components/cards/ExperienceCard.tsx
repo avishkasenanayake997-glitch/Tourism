@@ -1,5 +1,5 @@
 // ==============================================================================
-// Lankora: Experience Card
+// Lankora: Luxury Experience Card
 // ==============================================================================
 
 import React from 'react';
@@ -7,10 +7,10 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Experience } from '@/types';
 import { Typography } from '../ui/Typography';
 import { Badge } from '../ui/Badge';
-import { RatingStars } from '../ui/RatingStars';
 import { FavoriteButton } from '../ui/FavoriteButton';
 import { Colors, BorderRadius, Spacing, Shadows } from '@/constants/theme';
 
@@ -23,7 +23,7 @@ interface ExperienceCardProps {
 export const ExperienceCard: React.FC<ExperienceCardProps> = ({
   experience,
   onPress,
-  width = 240,
+  width = 250,
 }) => {
   const router = useRouter();
 
@@ -39,7 +39,7 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={handlePress}
-      style={[styles.container, { width }, Shadows.sm]}
+      style={[styles.container, { width }, Shadows.md]}
     >
       <View style={styles.imageContainer}>
         <Image
@@ -48,10 +48,16 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({
           contentFit="cover"
           transition={250}
         />
-        <View style={styles.imageOverlay} />
+        <LinearGradient
+          colors={['rgba(7, 10, 9, 0.3)', 'transparent', 'rgba(7, 10, 9, 0.85)']}
+          locations={[0, 0.5, 1]}
+          style={StyleSheet.absoluteFill}
+        />
+
         <View style={styles.badgeWrapper}>
           <Badge label={experience.category} variant="emerald" size="sm" />
         </View>
+
         <FavoriteButton
           targetType="experience"
           targetId={experience.id}
@@ -60,9 +66,10 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({
           iconSize={16}
           style={styles.favButton}
         />
+
         <View style={styles.durationTag}>
-          <Ionicons name="time-outline" size={12} color="#FFFFFF" />
-          <Typography variant="caption" color="#FFFFFF" weight="600" style={styles.durationText}>
+          <Ionicons name="time-outline" size={11} color={Colors.gold.light} />
+          <Typography variant="caption" color="#FFFFFF" weight="700" style={styles.durationText}>
             {experience.duration}
           </Typography>
         </View>
@@ -70,20 +77,39 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({
 
       <View style={styles.body}>
         <View style={styles.ratingRow}>
-          <RatingStars rating={experience.rating} reviewCount={experience.review_count} size={12} />
+          <View style={styles.ratingPill}>
+            <Ionicons name="star" size={11} color={Colors.gold.primary} />
+            <Typography variant="caption" color="#FFFFFF" weight="700" style={{ fontSize: 11 }}>
+              {experience.rating.toFixed(1)}
+            </Typography>
+            <Typography variant="caption" color="rgba(255, 255, 255, 0.5)" style={{ fontSize: 10.5 }}>
+              ({experience.review_count})
+            </Typography>
+          </View>
+          <Typography variant="caption" color="rgba(255, 255, 255, 0.5)" numberOfLines={1}>
+            {experience.location.split(',')[0]}
+          </Typography>
         </View>
 
-        <Typography variant="h4" weight="600" numberOfLines={2} style={styles.title}>
+        <Typography variant="h4" weight="700" numberOfLines={2} style={styles.title}>
           {experience.title}
         </Typography>
 
         <View style={styles.footerRow}>
-          <Typography variant="caption" color={Colors.emerald.accent} weight="700">
-            {experience.price}
-          </Typography>
-          <Typography variant="caption" color={Colors.dark.textMuted} numberOfLines={1}>
-            {experience.location.split(',')[0]}
-          </Typography>
+          <View style={styles.priceContainer}>
+            <Typography variant="caption" color="rgba(255, 255, 255, 0.5)" style={{ fontSize: 10 }}>
+              FROM
+            </Typography>
+            <Typography variant="body" color={Colors.emerald.accent} weight="800">
+              {experience.price}
+            </Typography>
+          </View>
+
+          <View style={styles.bookMiniPill}>
+            <Typography variant="badge" color={Colors.gold.primary} weight="800">
+              RESERVE
+            </Typography>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -92,21 +118,17 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: BorderRadius.lg,
+    borderRadius: BorderRadius.xl,
     overflow: 'hidden',
-    backgroundColor: Colors.dark.surfaceElevated,
+    backgroundColor: '#0E1512',
     borderWidth: 1,
-    borderColor: Colors.dark.border,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   imageContainer: {
-    height: 140,
+    height: 155,
     width: '100%',
     position: 'relative',
-    backgroundColor: Colors.dark.surfaceHighlight,
-  },
-  imageOverlay: {
-    ...(StyleSheet.absoluteFill as object),
-    backgroundColor: 'rgba(11, 17, 15, 0.25)',
+    backgroundColor: '#15201C',
   },
   badgeWrapper: {
     position: 'absolute',
@@ -124,33 +146,56 @@ const styles = StyleSheet.create({
     left: Spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(11, 17, 15, 0.65)',
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    borderRadius: BorderRadius.xs,
+    gap: 4,
+    backgroundColor: 'rgba(12, 18, 15, 0.78)',
+    paddingHorizontal: 8,
+    paddingVertical: 3.5,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
   },
   durationText: {
-    marginLeft: 3,
-    fontSize: 10,
+    fontSize: 10.5,
   },
   body: {
     padding: Spacing.md,
+    backgroundColor: '#0E1512',
   },
   ratingRow: {
-    marginBottom: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  ratingPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
   },
   title: {
-    color: Colors.dark.text,
+    color: '#FFFFFF',
     minHeight: 40,
-    marginBottom: Spacing.xs,
+    marginBottom: Spacing.sm,
+    lineHeight: 20,
+    letterSpacing: -0.2,
   },
   footerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 2,
     borderTopWidth: 1,
-    borderTopColor: Colors.dark.border,
-    paddingTop: 6,
+    borderTopColor: 'rgba(255, 255, 255, 0.08)',
+    paddingTop: 8,
+  },
+  priceContainer: {
+    flexDirection: 'column',
+  },
+  bookMiniPill: {
+    backgroundColor: 'rgba(245, 176, 65, 0.14)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: BorderRadius.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(245, 176, 65, 0.3)',
   },
 });

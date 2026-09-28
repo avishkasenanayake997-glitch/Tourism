@@ -1,5 +1,5 @@
 // ==============================================================================
-// Lankora: Saved (Favorites) Screen
+// Lankora: Saved (Favorites) Screen (Luxury Bookmarks & Moodboard)
 // ==============================================================================
 
 import React, { useState } from 'react';
@@ -25,19 +25,21 @@ import { RestaurantCard } from '@/components/cards/RestaurantCard';
 import { StayCard } from '@/components/cards/StayCard';
 import { Colors, Spacing, BorderRadius } from '@/constants/theme';
 
-const TABS: { id: 'all' | TargetType; label: string }[] = [
-  { id: 'all', label: 'All Saved' },
-  { id: 'destination', label: 'Destinations' },
-  { id: 'experience', label: 'Experiences' },
-  { id: 'place', label: 'Places' },
-  { id: 'restaurant', label: 'Dining' },
-  { id: 'stay', label: 'Stays' },
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const TABS: { id: 'all' | TargetType; label: string; icon: string }[] = [
+  { id: 'all', label: 'All', icon: 'heart' },
+  { id: 'destination', label: 'Destinations', icon: 'compass' },
+  { id: 'experience', label: 'Experiences', icon: 'trail-sign' },
+  { id: 'place', label: 'Sights', icon: 'business' },
+  { id: 'restaurant', label: 'Dining', icon: 'restaurant' },
+  { id: 'stay', label: 'Retreats', icon: 'bed' },
 ];
 
 export default function SavedScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { favorites, isLoading } = useFavorites();
+  const { favorites } = useFavorites();
   const [activeTab, setActiveTab] = useState<'all' | TargetType>('all');
 
   const filtered = favorites.filter((f) => {
@@ -45,16 +47,29 @@ export default function SavedScreen() {
     return f.target_type === activeTab;
   });
 
+  const cardWidth = SCREEN_WIDTH - 32;
+
   return (
     <View style={[styles.screen, { paddingTop: Math.max(insets.top, 16) }]}>
-      {/* Top Header */}
+      {/* Top Luxury Header */}
       <View style={styles.header}>
-        <Typography variant="badge" color={Colors.terracotta.light} weight="700">
-          SAVED WONDERS
-        </Typography>
-        <Typography variant="h2" weight="700">
-          Your Curated Collection
-        </Typography>
+        <View style={styles.titleGroup}>
+          <View style={styles.badgeRow}>
+            <Ionicons name="bookmark" size={13} color={Colors.terracotta.primary} />
+            <Typography variant="badge" color={Colors.terracotta.primary} weight="800">
+              SAVED WONDERS
+            </Typography>
+          </View>
+          <Typography variant="display" color="#FFFFFF" weight="800" style={styles.screenTitle}>
+            Your Collection
+          </Typography>
+        </View>
+
+        <View style={styles.countPill}>
+          <Typography variant="caption" color={Colors.gold.primary} weight="800">
+            {favorites.length} SAVED
+          </Typography>
+        </View>
       </View>
 
       {/* Category Tabs */}
@@ -72,10 +87,16 @@ export default function SavedScreen() {
                 onPress={() => setActiveTab(tab.id)}
                 style={[styles.tabButton, active && styles.tabButtonActive]}
               >
+                <Ionicons
+                  name={tab.icon as any}
+                  size={12}
+                  color={active ? '#000000' : Colors.terracotta.primary}
+                />
                 <Typography
                   variant="caption"
-                  weight={active ? '700' : '500'}
-                  color={active ? '#FFFFFF' : Colors.dark.textSecondary}
+                  weight={active ? '800' : '600'}
+                  color={active ? '#000000' : 'rgba(255, 255, 255, 0.8)'}
+                  style={{ marginLeft: 4 }}
                 >
                   {tab.label} ({count})
                 </Typography>
@@ -98,7 +119,7 @@ export default function SavedScreen() {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollList}
+          contentContainerStyle={[styles.scrollList, { paddingBottom: 110 }]}
         >
           {filtered.map((fav) => {
             if (!fav.item) return null;
@@ -108,16 +129,16 @@ export default function SavedScreen() {
                   <DestinationCard destination={fav.item as Destination} variant="featured" />
                 )}
                 {fav.target_type === 'experience' && (
-                  <ExperienceCard experience={fav.item as Experience} width={Dimensions.get('window').width - 40} />
+                  <ExperienceCard experience={fav.item as Experience} width={cardWidth} />
                 )}
                 {fav.target_type === 'place' && (
-                  <PlaceCard place={fav.item as Place} width={Dimensions.get('window').width - 40} />
+                  <PlaceCard place={fav.item as Place} width={cardWidth} />
                 )}
                 {fav.target_type === 'restaurant' && (
-                  <RestaurantCard restaurant={fav.item as Restaurant} width={Dimensions.get('window').width - 40} />
+                  <RestaurantCard restaurant={fav.item as Restaurant} width={cardWidth} />
                 )}
                 {fav.target_type === 'stay' && (
-                  <StayCard stay={fav.item as Stay} width={Dimensions.get('window').width - 40} />
+                  <StayCard stay={fav.item as Stay} width={cardWidth} />
                 )}
               </View>
             );
@@ -131,37 +152,60 @@ export default function SavedScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.dark.background,
+    backgroundColor: '#070A09',
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
     paddingHorizontal: Spacing.lg,
     paddingBottom: Spacing.sm,
   },
+  titleGroup: {
+    flex: 1,
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 2,
+  },
+  screenTitle: {
+    letterSpacing: -0.6,
+  },
+  countPill: {
+    backgroundColor: 'rgba(245, 176, 65, 0.12)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(245, 176, 65, 0.3)',
+  },
   tabsWrapper: {
-    paddingVertical: Spacing.xs,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.dark.border,
+    marginTop: Spacing.xs,
+    marginBottom: Spacing.md,
   },
   tabsRow: {
     paddingHorizontal: Spacing.lg,
-    gap: Spacing.xs,
+    gap: 8,
   },
   tabButton: {
-    paddingHorizontal: 13,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0F1714',
+    paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: BorderRadius.full,
-    backgroundColor: Colors.dark.surfaceElevated,
     borderWidth: 1,
-    borderColor: Colors.dark.border,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   tabButtonActive: {
-    backgroundColor: Colors.emerald.vibrant,
-    borderColor: Colors.emerald.mint,
+    backgroundColor: Colors.gold.primary,
+    borderColor: Colors.gold.primary,
   },
   scrollList: {
-    padding: Spacing.lg,
-    gap: Spacing.lg,
-    paddingBottom: 60,
+    paddingHorizontal: Spacing.lg,
+    gap: 16,
   },
   itemWrapper: {
     width: '100%',
